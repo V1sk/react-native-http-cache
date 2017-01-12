@@ -4,6 +4,8 @@
 import { NativeModules } from 'react-native';
 const native = NativeModules.HttpCache;
 
+export const clearWebViewCache = native.clearWebViewCache;
+
 export const clearHttpCache = native.clearCache;
 
 export const getHttpCacheSize = native.getHttpCacheSize;

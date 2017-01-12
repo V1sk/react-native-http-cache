@@ -41,5 +41,10 @@ RCT_EXPORT_METHOD(clearImageCache:(RCTPromiseResolveBlock)resolve reject:(RCTPro
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(clearWebViewCache:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+{
+    resolve(nil);
+}
+
 
 @end
