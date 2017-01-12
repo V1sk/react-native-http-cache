@@ -32,6 +32,60 @@ public class HttpCacheModule extends ReactContextBaseJavaModule {
         return "RCTHttpCache";
     }
 
+    public String getDiskCacheDir() {
+        String cachePath = null;
+        if (android.os.Environment.MEDIA_MOUNTED.equals(android.os.Environment.getExternalStorageState())
+                || !android.os.Environment.isExternalStorageRemovable()) {
+            cachePath = getReactApplicationContext().getExternalCacheDir().getPath();
+        } else {
+            cachePath = getReactApplicationContext().getCacheDir().getPath();
+        }
+        return cachePath;
+    }
+
+
+    private static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                boolean success = deleteDir(new File(dir, aChildren));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        // The directory is now empty so delete it
+          if (dir.isFile()) {
+                return dir.delete();
+            }else{
+                return true;
+            }
+        //return dir != null && dir.delete();
+    }
+
+        @ReactMethod
+        public void clearWebViewCache(){
+           String path = getReactApplicationContext().getFilesDir().getParent() + "/app_webview";
+           File dir = new File(path);
+           String[] children = dir.list();
+
+           String cPath = this.getDiskCacheDir(); //getReactApplicationContext().getCacheDir().getAbsolutePath();
+           File cacheDir = new File(cPath);
+           deleteDir(cacheDir);
+
+           for (String aChildren : children) {
+                File cDir = new File(dir, aChildren);
+                if(cDir.isDirectory() && aChildren.toLowerCase().indexOf("cache") != -1){
+                    deleteDir(cDir);
+                    return;
+                }
+           }
+
+            //if (dir.isDirectory()) {
+            //    deleteDir(dir);
+            //}
+        }
+
     @ReactMethod
     public void clearCache(Promise promise){
         try {
