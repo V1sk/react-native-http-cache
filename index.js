@@ -8,11 +8,19 @@ export const clearWebViewCache = native.clearWebViewCache;
 
 export const clearHttpCache = native.clearCache;
 
+export const getDirCacheSize = native.getCacheDirSize;
+
 export const getHttpCacheSize = native.getHttpCacheSize;
 
 export const clearImageCache = native.clearImageCache;
 
 export const getImageCacheSize = native.getImageCacheSize;
+
+export async function getCacheSizeDir(){
+  const ch = await getDirCacheSize()
+
+  return ch
+}
 
 export async function getCacheSize(){
   const arr = await Promise.all([getHttpCacheSize(), getImageCacheSize()]);

@@ -86,6 +86,35 @@ public class HttpCacheModule extends ReactContextBaseJavaModule {
             //}
         }
 
+
+   // 递归方式 计算文件的大小
+    private long getTotalSizeOfFilesInDir(File file) {
+        if (file.isFile())
+            return file.length();
+
+        final File[] children = file.listFiles();
+        long total = 0;
+        if (children != null)
+            for (final File child : children)
+                total += getTotalSizeOfFilesInDir(child);
+        return total;
+    }
+
+    @ReactMethod
+    public void getCacheDirSize(Promise promise){
+        //try {
+            String path = this.getDiskCacheDir();
+            String wPath = getReactApplicationContext().getFilesDir().getParent() + "/app_webview";
+            long total = this.getTotalSizeOfFilesInDir(new File(path));
+            long totalW = this.getTotalSizeOfFilesInDir(new File(wPath));
+
+            promise.resolve((double)total + (double)totalW);
+        //} catch(IOException e){
+        //    promise.reject(e);
+        //}
+
+    }
+
     @ReactMethod
     public void clearCache(Promise promise){
         try {
