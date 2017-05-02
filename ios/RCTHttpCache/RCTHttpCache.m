@@ -7,9 +7,9 @@
 //
 
 #import "RCTHttpCache.h"
-#import "RCTImageLoader.h"
-#import "RCTImageCache.h"
-#import "RCTBridge.h"
+#import <React/RCTImageLoader.h>
+#import <React/RCTImageCache.h>
+#import <React/RCTBridge.h>
 
 @implementation RCTHttpCache
 
